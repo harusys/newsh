@@ -26,12 +26,16 @@ module.exports = async function (context, req) {
                 if (req.body && req.body.events[0].message.text === "天気を教えて"){                        
                         const CITY_ID = `140010`; //取得したい地域のIDを指定
                         const URL = `https://weather.tsukumijima.net/api/forecast?city=${CITY_ID}`;
-                        const response = await axios.get(URL)   //"await"をつけないと，TypeError: Cannot read property 'description' of undefinedStack: ってエラーが出る．
-                        const weatehrtext = response.data.description.bodyText;
-                        context.log(weatehrtext);
+                        const response = await axios.get(URL);   //"await"をつけないと，TypeError: Cannot read property 'description' of undefinedStack: ってエラーが出る．                        
+                        const weatehrDate = response.data.forecasts[0];
+                        /*const weatherInfo = {
+                        dateday: response.data.forecasts[0].date,
+                        weather: response.data.forecasts[0].detail.weather
+                        };  */                                               
                         message3 = {
                             type: "text",
-                            text: weatehrtext
+                            text : `【日付】${weatehrDate.date} , \n【天気】:${weatehrDate.detail.weather}`
+                            //text : `【日付】${weatherInfo.dateday} , \n【天気】:${weatherInfo.weather}`  →weatehrInfo is not definedStackになる（？）
                         }
                         client.replyMessage(req.body.events[0].replyToken, message3);
                 }
