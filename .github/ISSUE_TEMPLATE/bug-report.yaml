@@ -1,6 +1,6 @@
 name: 🐞 Bug
 description: 改善に役立つレポートを作成する
-title: "[Bug]: "
+title: "<title>"
 labels: [bug]
 body:
 - type: checkboxes
