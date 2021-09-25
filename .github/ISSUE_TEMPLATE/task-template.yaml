@@ -1,0 +1,21 @@
+name: Task
+description: タスクのテンプレートを記載する
+title: "<title>"
+body:
+- type: textarea
+  attributes:
+    label: Purpose
+    description: A concise description of what purpose the task is.
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Todo list
+    description: A concise description of how can we close the issue.
+    value: |
+        - [ ] Sub task A
+        - [ ] Sub task B
+        - [ ] Sub task C
+    render: markdown
+  validations:
+    required: true
