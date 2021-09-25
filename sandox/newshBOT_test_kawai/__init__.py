@@ -19,6 +19,9 @@ channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
+
+
+
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
@@ -40,7 +43,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
+
+    profile = line_bot_api.get_profile(event.source.user_id)
+    profile.display_name #-> 表示名
+    profile.user_id #-> ユーザーID
+
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=event.message.text)
+        TextSendMessage(text=profile.display_name + 'さんこんにちは．あなたが打ったのは「' + event.message.text + '」です．ユーザIDは「' + profile.user_id + '」です．')
     )
