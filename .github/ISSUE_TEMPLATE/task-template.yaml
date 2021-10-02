@@ -11,11 +11,12 @@ body:
 - type: textarea
   attributes:
     label: Todo list
-    description: A concise description of how can we close the issue.
-    value: |
+    description: |
+      A concise description of how can we close the issue.
         - [ ] Sub task A
         - [ ] Sub task B
         - [ ] Sub task C
-    render: markdown
+    value: |
+        - [ ] 
   validations:
     required: true
