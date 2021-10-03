@@ -456,110 +456,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="_シーケンス図"><a class="link" href="#_シーケンス図">1. シーケンス図</a></h2>
 <div class="sectionbody">
-<div class="listingblock">
+<div class="imageblock">
 <div class="content">
-<pre>actor User
-participant "LINE"
-box "Newsh" #LightBlue
-participant "Gateway"
-participant "Weather"
-participant "Twitter"
-end box
-participant "Weather API"
-participant "Twitter API"
-
-
-group #transparent Schedule send news (Timer)
-    "Gateway" -&gt; "Weather"
-    activate "Gateway"
-    activate "Weather"
-
-    "Weather" -&gt; "Weather API" : /api/forecast
-    activate "Weather API"
-
-    "Weather API" --&gt; "Weather"
-    deactivate "Weather API"
-
-    "Weather" --&gt; "Gateway"
-    deactivate "Weather"
-
-    "Gateway" -&gt; "Twitter"
-    activate "Twitter"
-
-    "Twitter" -&gt; "Twitter API" : /trends
-    activate "Twitter API"
-
-    "Twitter API" --&gt; "Twitter"
-    deactivate "Twitter API"
-
-    "Twitter" --&gt; "Gateway"
-    deactivate "Twitter"
-
-    "Gateway" -&gt; "LINE" : Push Message
-    activate "LINE"
-
-    "LINE" -&gt; "User" : News (Text)
-
-    "User" --&gt; "LINE"
-
-    "LINE" --&gt; "Gateway"
-    deactivate "LINE"
-    deactivate "Gateway"
-end
-
-
-group #transparent Get weather news (Http)
-    "User" -&gt; "LINE" : Rich Menu (Button)
-    activate "LINE"
-
-    "LINE" -&gt; "Gateway" : /weather
-    activate "Gateway"
-
-    "Gateway" -&gt; "Weather"
-    activate "Weather"
-
-    "Weather" -&gt; "Weather API" : /api/forecast
-    activate "Weather API"
-
-    "Weather API" --&gt; "Weather"
-    deactivate "Weather API"
-
-    "Weather" --&gt; "Gateway"
-    deactivate "Weather"
-
-    "Gateway" --&gt; "LINE" : Reply Message
-    deactivate "Gateway"
-
-    "LINE" --&gt; "User" : News (Text)
-    deactivate "LINE"
-end
-
-
-group #transparent Get twitter Trends (Http)
-    "User" -&gt; "LINE" : Rich Menu (Button)
-    activate "LINE"
-
-    "LINE" -&gt; "Gateway" : /twitter/trends
-    activate "Gateway"
-
-    "Gateway" -&gt; "Twitter"
-    activate "Twitter"
-
-    "Twitter" -&gt; "Twitter API" : /trends
-    activate "Twitter API"
-
-    "Twitter API" --&gt; "Twitter"
-    deactivate "Twitter API"
-
-    "Twitter" --&gt; "Gateway"
-    deactivate "Twitter"
-
-    "Gateway" --&gt; "LINE" : Reply Message
-    deactivate "Gateway"
-
-    "LINE" --&gt; "User" : News (Text)
-    deactivate "LINE"
-end</pre>
+<img src="./_images/sequence-diagram.png" alt="sequence diagram" width="739" height="896">
 </div>
 </div>
 </div>
@@ -568,7 +467,7 @@ end</pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.1<br>
-Last updated 2021-10-03 03:50:58 UTC
+Last updated 2021-10-03 04:09:10 UTC
 </div>
 </div>
 </body>
