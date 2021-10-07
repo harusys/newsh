@@ -1,0 +1,32 @@
+# This is a AsciiDoctor workflow to help you get started with Actions
+name: GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    
+
+jobs:
+  asciidoc:
+    runs-on: ubuntu-20.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+    - uses: actions/checkout@v2
+      with:
+          submodules: true
+          fetch-depth: 0
+
+    - name: Build
+      uses: tonynv/asciidoctor-action@v2
+      with:
+        program: "asciidoctor -r asciidoctor-diagram -D public docs/index.adoc"
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with: 
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: ./public
