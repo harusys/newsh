@@ -1,6 +1,8 @@
 import logging
 import os
 import azure.functions as func
+import requests
+import json
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -43,12 +45,22 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
+    logging.info('aaaaaaaaaaaaaaaaaaaaaa.')
 
     profile = line_bot_api.get_profile(event.source.user_id)
     profile.display_name #-> 表示名
     profile.user_id #-> ユーザーID
 
+    url = "https://weather.tsukumijima.net/api/forecast?city=140010"
+    r = requests.get(url)
+    jsonData = r.json()
+    w = jsonData["forecasts"][0]["telop"]
+    # dateday = r.response.data.forecasts[0].date
+    logging.info(jsonData)
+    logging.info(w)
+
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=profile.display_name + 'さんこんにちは．あなたが打ったのは「' + event.message.text + '」です．ユーザIDは「' + profile.user_id + '」です．')
+        TextSendMessage(text=profile.display_name + 'さんこんにちは．あなたが打ったのは「' + event.message.text + '」です．ユーザIDは「' + profile.user_id + '」です．天気は'+w+'です')
+        
     )
