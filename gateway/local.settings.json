@@ -1,0 +1,11 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "NEWSH_TWITTER_URL": "http://localhost:7071/trends"
+  },
+  "Host": {
+    "LocalHttpPort": 7070
+  }
+}

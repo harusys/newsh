@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "TWITTER_API_KEY": "vQEqo6jPKUutYFSWUrw3tBm8y",
+    "TWITTER_API_SECRET": "BlNwx56MU7YXQ4zTGRx5eGQgklqewb8vE50dUjO4SaeNm7lVVJ",
+    "TWITTER_ACCESS_TOKEN_KEY": "1185878579206225920-9pSIpOwATiatGnvnKEpf2XKpRV791J",
+    "TWITTER_ACCESS_TOKEN_SECRET": "fndxnoqQKW3Nf8ipTmASDUa4hYXjcRELd1neFSL4e46fb"
+  },
+  "Host": {
+    "LocalHttpPort": 7071
+  }
+}
