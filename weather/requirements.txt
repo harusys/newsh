@@ -1,0 +1,4 @@
+azure-functions
+bonnette
+fastapi
+line-bot-sdk
