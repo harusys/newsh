@@ -2,8 +2,10 @@
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "",
+    "Environment": "local",
     "FUNCTIONS_WORKER_RUNTIME": "python",
-    "NEWSH_TWITTER_URL": "http://localhost:7071/trends"
+    "NEWSH_TWITTER_URL": "http://localhost:7071/trends",
+    "LINE_CHANNEL_ACCESS_TOKEN": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/LINE-CHANNEL-ACCESS-TOKEN/)"
   },
   "Host": {
     "LocalHttpPort": 7070
