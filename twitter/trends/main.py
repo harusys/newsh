@@ -1,11 +1,10 @@
+from azure.identity import VisualStudioCodeCredential
+from azure.keyvault.secrets import SecretClient
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
-
-import tweepy
 import os
-from azure.keyvault.secrets import SecretClient
-from azure.identity import VisualStudioCodeCredential
+import tweepy
 
 app = FastAPI()
 
