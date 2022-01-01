@@ -4,15 +4,27 @@ from typing import List
 
 import tweepy
 import os
+from azure.keyvault.secrets import SecretClient
+from azure.identity import VisualStudioCodeCredential
 
 app = FastAPI()
 
-
 # 環境設定
-API_KEY=os.getenv('TWITTER_API_KEY', None)
-API_SECRET=os.getenv('TWITTER_API_SECRET', None)
-AT_KEY=os.getenv('TWITTER_ACCESS_TOKEN_KEY', None)
-AT_SECRET=os.getenv('TWITTER_ACCESS_TOKEN_SECRET', None)
+API_KEY=os.environ["TWITTER_API_KEY"]
+API_SECRET=os.environ["TWITTER_API_SECRET"]
+AT_KEY=os.environ["TWITTER_ACCESS_TOKEN_KEY"]
+AT_SECRET=os.environ["TWITTER_ACCESS_TOKEN_SECRET"]
+
+# ローカル実行時は Key Vault 参照機能不可
+if os.environ["Environment"] == "local":
+    credential = VisualStudioCodeCredential()
+    client = SecretClient(vault_url="https://kv-newsh-test-je-001.vault.azure.net", credential=credential)
+    # シークレットを直接取得
+    API_KEY = client.get_secret("TWITTER-API-KEY").value
+    API_SECRET = client.get_secret("TWITTER-API-SECRET").value
+    AT_KEY = client.get_secret("TWITTER-ACCESS-TOKEN-KEY").value
+    AT_SECRET = client.get_secret("TWITTER-ACCESS-TOKEN-SECRET").value
+
 
 WID = 23424856 # 日本
 
