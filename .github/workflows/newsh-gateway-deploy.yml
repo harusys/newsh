@@ -2,7 +2,7 @@ name: Newsh Gateway Deploy
 on:
   push:
     tags:
-      - 'gateway-release/[1-9]+.[0-9]+.[0-9]+-[0-9]+'
+      - 'gateway-v[1-9]+.[0-9]+.[0-9]+'
 
 permissions:
   id-token: write
