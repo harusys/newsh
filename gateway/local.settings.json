@@ -3,11 +3,13 @@
   "Values": {
     "AzureWebJobsStorage": "",
     "Environment": "local",
-    "ScheduleAppSetting": "0 0 1,12 * * *",
-    "TWITTER_TREND_HIGHER_THAN": "20",
     "FUNCTIONS_WORKER_RUNTIME": "python",
-    "NEWSH_TWITTER_URL": "http://localhost:7071/trends",
-    "LINE_CHANNEL_ACCESS_TOKEN": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/LINE-CHANNEL-ACCESS-TOKEN/)"
+    "ScheduleAppSetting": "0 0 1,12 * * *",
+    "TWITTER_TREND_URL": "http://localhost:7071/trends",
+    "TWITTER_TREND_HIGHER_THAN": "20",
+    "TWITTER_TREND_KEYWORD": "Twitter トレンドを知りたい",
+    "LINE_CHANNEL_ACCESS_TOKEN": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/LINE-CHANNEL-ACCESS-TOKEN/)",
+    "LINE_CHANNEL_SECRET": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/LINE-CHANNEL-SECRET/)"
   },
   "Host": {
     "LocalHttpPort": 7070
