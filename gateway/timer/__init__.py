@@ -11,8 +11,8 @@ import requests
 import logging
 
 # 環境設定
-URL = os.environ["NEWSH_TWITTER_URL"]
 LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
+TWITTER_TREND_URL = os.environ["TWITTER_TREND_URL"]
 TWITTER_TREND_HIGHER_THAN = os.environ["TWITTER_TREND_HIGHER_THAN"]
 
 # ローカル実行時は Key Vault 参照機能不可
@@ -45,7 +45,7 @@ def main(mytimer: func.TimerRequest) -> None:
                  jst_timestamp.isoformat())
 
     # Newsh Twitter API (trends) 呼び出し
-    response = requests.get(URL).json()
+    response = requests.get(TWITTER_TREND_URL).json()
     trends = parse_obj_as(List[Trend], response)
 
     # LINE 通知用にメッセージ整形
