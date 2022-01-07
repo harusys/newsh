@@ -15,9 +15,9 @@ app = FastAPI()
 
 
 # モデルで必要な情報を絞り込み
-# class Trend(BaseModel):
-#     name: str
-#     tweet_volume: int = None
+class Weather(BaseModel):
+    weather: str
+    tweet_volume: int = None
 
 
 @app.get("/weather")
@@ -48,9 +48,16 @@ async def weather_get():
         # print('日時:{0} 天気:{1} 気温(℃):{2} 雨量(mm):{3}'.format(
         #     forecastDatetime, weatherDescription, temperature, rainfall))
 
-    responseText = f'今日の天気は{forecastDatetime}, {weatherDescription}, {temperature}, {rainfall}です'
-    
-    # responseText = f'abcd'
-    # logging.info(f'Return of main is{responseText}')
+    weatherList = {}
+    weatherList[""] = weatherDescription
+    weatherList[""] = weatherDescription
+    weatherList[""] = weatherDescription
+
+    # responseText = f'今日の天気は{forecastDatetime}, {weatherDescription}, {temperature}, {rainfall}です'
+    responseText = f'天気：{weatherDescription}\n'
+    responseText += f'気温：{temperature} ℃\n'
+    responseText += f'降水確率：{rainfall} mm'
+    logging.info(f'Return of main is{responseText}')
+
     # 応答
     return responseText
