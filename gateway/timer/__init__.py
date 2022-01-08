@@ -17,8 +17,11 @@ from linebot.models import (
 
 # 環境設定（Azure FunctionsのApplication Settingに設定した値から取得する）
 URL = os.getenv("NEWSH_WEATHER_URL")
-channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
-channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
+# To Do :佐尾さんのキーと競合するため,一次的に末尾に「_KAWAI」を付けている．
+channel_secret = os.getenv('LINE_CHANNEL_SECRET_KAWAI', None)
+channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN_KAWAI', None)
+# channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
+# channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
@@ -34,7 +37,6 @@ def main(mytimer: func.TimerRequest) -> None:
     logging.info(URL)
     logging.info(channel_secret)
     response = requests.get(URL).json()
-    # response = requests.get("https://func-newsh-weather-prod-japaneast-001.azurewebsites.net/weather?code=4buZaDvSUaYB7jXpWkM9laPV8g8dEkb9k1xv8k4nu/Hqnt0KuXXw8w==").json()
 
     responseText = f'天気：{response["WeatherDescription"]}\n'
     responseText += f'気温：{response["Temperature"]} ℃\n'

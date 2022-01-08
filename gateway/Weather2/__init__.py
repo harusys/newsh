@@ -19,8 +19,10 @@ from .main import app
 
 URL = os.getenv("NEWSH_WEATHER_URL")
 # Azure FunctionsのApplication Settingに設定した値から取得する↓
-channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
-channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
+channel_secret = os.getenv('LINE_CHANNEL_SECRET_KAWAI', None)
+channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN_KAWAI', None)
+# channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
+# channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
 
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)

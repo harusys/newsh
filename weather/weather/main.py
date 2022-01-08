@@ -1,3 +1,5 @@
+from azure.identity import VisualStudioCodeCredential
+from azure.keyvault.secrets import SecretClient
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
@@ -17,6 +19,15 @@ BASE_URL = os.getenv('OPEN_WEATHER_API_BASE_URL')
 city = os.getenv('CITY_NAME')
 # ToDo：LINEから都市を指定
 #city = event.message.text
+
+# ローカル実行時は Key Vault 参照機能不可
+if os.getenv("Environment") == "local":
+    credential = VisualStudioCodeCredential()
+    client = SecretClient(
+        vault_url="https://kv-newsh-prod-je-001.vault.azure.net",
+        credential=credential)
+    # シークレットを直接取得
+    API_KEY = client.get_secret("OPEN-WEATHER-API-KEY").value
 
 # To Do : クラス設定
 # モデルで必要な情報を絞り込み
