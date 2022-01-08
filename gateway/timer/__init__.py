@@ -37,6 +37,18 @@ def main(mytimer: func.TimerRequest) -> None:
     if mytimer.past_due:
         logging.info('The timer is past due!')
 
+    # Twitter トレンド取得
+    trends = get_twitter_trends()
+
+    # LINE 通知
+    line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
+    line_bot_api.broadcast(TextSendMessage(text=trends))
+
+    # タイマー起動のため応答なし
+
+
+def get_twitter_trends():
+
     # 日時取得
     JST = timezone(timedelta(hours=+9), 'JST')
     jst_timestamp = datetime.now(JST)
@@ -56,8 +68,4 @@ def main(mytimer: func.TimerRequest) -> None:
     for i in range(int(TWITTER_TREND_HIGHER_THAN)):
         msg_body += f"\n{i+1}. {trends[i].name}"
 
-    # LINE 通知
-    line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
-    line_bot_api.broadcast(TextSendMessage(text=msg_header + msg_body))
-
-    # タイマー起動のため応答なし
+    return msg_header + msg_body

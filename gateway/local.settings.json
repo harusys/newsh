@@ -7,7 +7,7 @@
     "ScheduleAppSetting": "0 0 1,12 * * *",
     "TWITTER_TREND_URL": "http://localhost:7071/trends",
     "TWITTER_TREND_HIGHER_THAN": "20",
-    "TWITTER_TREND_KEYWORD": "Twitter トレンドを知りたい",
+    "TWITTER_TREND_KEYWORD": "Twitterトレンドを知りたい",
     "LINE_CHANNEL_ACCESS_TOKEN": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/LINE-CHANNEL-ACCESS-TOKEN/)",
     "LINE_CHANNEL_SECRET": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/LINE-CHANNEL-SECRET/)"
   },
