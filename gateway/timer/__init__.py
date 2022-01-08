@@ -15,6 +15,9 @@ LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 TWITTER_TREND_URL = os.environ["TWITTER_TREND_URL"]
 TWITTER_TREND_HIGHER_THAN = os.environ["TWITTER_TREND_HIGHER_THAN"]
 
+# インスタンス生成
+line = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
+
 # ローカル実行時は Key Vault 参照機能不可
 if os.environ["Environment"] == "local":
     credential = VisualStudioCodeCredential()
@@ -41,8 +44,7 @@ def main(mytimer: func.TimerRequest) -> None:
     trends = get_twitter_trends()
 
     # LINE 通知
-    line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
-    line_bot_api.broadcast(TextSendMessage(text=trends))
+    line.broadcast(TextSendMessage(text=trends))
 
     # タイマー起動のため応答なし
 
