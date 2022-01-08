@@ -1,0 +1,15 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "Environment": "local",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "TWITTER_API_KEY": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/TWITTER-API-KEY/)",
+    "TWITTER_API_SECRET": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/TWITTER-API-SECRET/)",
+    "TWITTER_ACCESS_TOKEN_KEY": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/TWITTER-ACCESS-TOKEN-KEY/)",
+    "TWITTER_ACCESS_TOKEN_SECRET": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/TWITTER-ACCESS-TOKEN-SECRET/)"
+  },
+  "Host": {
+    "LocalHttpPort": 7071
+  }
+}
