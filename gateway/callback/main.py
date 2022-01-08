@@ -13,12 +13,13 @@ app = FastAPI()
 
 # 環境設定
 TWITTER_TREND_KEYWORD = os.environ["TWITTER_TREND_KEYWORD"]
+WEATHER_KEYWORD = os.environ["WEATHER_KEYWORD"]
 LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 
 # インスタンス生成
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
-line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
+line = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 
 # ローカル実行時は Key Vault 参照機能不可
 if os.environ["Environment"] == "local":
@@ -55,9 +56,12 @@ def message_text(event):
 
     if event.message.text == TWITTER_TREND_KEYWORD:
         trends = get_twitter_trends()
-        line_bot_api.reply_message(event.reply_token,
-                                   TextSendMessage(text=trends))
+        line.reply_message(event.reply_token, TextSendMessage(text=trends))
+
+    if event.message.text == WEATHER_KEYWORD:
+        line.reply_message(event.reply_token,
+                           TextSendMessage(text="リリースまでお待ち下さい。"))
 
     else:
-        line_bot_api.reply_message(event.reply_token,
-                                   TextSendMessage(text=f"すみません、\nよく分かりませんでした。"))
+        line.reply_message(event.reply_token,
+                           TextSendMessage(text="すみません、\nよく分かりませんでした。"))
