@@ -10,54 +10,45 @@ import datetime
 
 app = FastAPI()
 
-
 # 環境設定
+# OpenWeatherAPI
+API_KEY = os.getenv('OPEN_WEATHER_API_KEY')
+BASE_URL = os.getenv('OPEN_WEATHER_API_BASE_URL')
+city = os.getenv('CITY_NAME')
+# ToDo：LINEから都市を指定
+#city = event.message.text
 
-
+# To Do : クラス設定
 # モデルで必要な情報を絞り込み
 class Weather(BaseModel):
     weather: str
     tweet_volume: int = None
 
-
 @app.get("/weather")
 async def weather_get():
 
-    # OpenWeatherAPI
-    API_KEY = "3acade7963ee118c50ddc8fbff4a2e64"
-    BASE_URL = "http://api.openweathermap.org/data/2.5/forecast"
-    city = "yokohama"
-    #city = event.message.text
+    # トレンドを取得
     response = requests.get(f'{BASE_URL}?q={city}&units=metric&lang=ja&APPID={API_KEY}')
     forecastData = json.loads(response.text)
-
-    # トレンドを取得
+    
     for item in forecastData['list']:
-        #forecastDatetime = datetime.fromtimestamp(item["dt"])
-        forecastDatetime = (item["dt"])
-        #logging.info(forecastDatetime)
         #To Do : 日本語変換したい
+        #forecastDatetime = datetime.fromtimestamp(item["dt"])
+        # forecastDatetime = (item["dt"])
         #forecastDatetime = forecastDatetime24.astimezone(timezone('Asia/Tokyo'))
         #forecastDatetime = timezone('Asia/Tokyo').localize(datetime.datetime.fromtimestamp(item['dt']))
-        #logging.info(forecastDatetime)
         weatherDescription = item['weather'][0]['description']
         temperature = item['main']['temp']
         rainfall = 0
         if 'rain' in item and '3h' in item['rain']:
             rainfall = item['rain']['3h']
-        # print('日時:{0} 天気:{1} 気温(℃):{2} 雨量(mm):{3}'.format(
-        #     forecastDatetime, weatherDescription, temperature, rainfall))
 
     weatherList = {}
-    weatherList[""] = weatherDescription
-    weatherList[""] = weatherDescription
-    weatherList[""] = weatherDescription
+    weatherList["WeatherDescription"] = weatherDescription
+    weatherList["Temperature"] = temperature
+    weatherList["Rainfall"] = rainfall
 
-    # responseText = f'今日の天気は{forecastDatetime}, {weatherDescription}, {temperature}, {rainfall}です'
-    responseText = f'天気：{weatherDescription}\n'
-    responseText += f'気温：{temperature} ℃\n'
-    responseText += f'降水確率：{rainfall} mm'
-    logging.info(f'Return of main is{responseText}')
+    logging.info(f'Return of main is{weatherList}')
 
     # 応答
-    return responseText
+    return weatherList

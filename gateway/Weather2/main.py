@@ -29,5 +29,6 @@ async def call_weather():
     # Newsh weather API 呼び出し
     # response = requests.get(URL)
     response = requests.get('https://func-newsh-weather-prod-japaneast-001.azurewebsites.net/weather?code=oXiIlbUcEkqlz2W1bejM2Imy3abiWyziRWfs/PrsyZFx3uRv4IFjhg==')
+    # ここのキーは，実際にGitにあげるときは洗い替えしてから．もうこれは漏洩
     logging.info(f'Return is {response.text}')
     return response.text

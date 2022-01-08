@@ -17,6 +17,8 @@ from linebot.models import (
 
 from .main import app
 
+URL=os.getenv('NEWSH_WEATHER_URL')
+
 # Azure FunctionsのApplication Settingに設定した値から取得する↓
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
@@ -33,7 +35,6 @@ handler = WebhookHandler(channel_secret)
 #         TextSendMessage(text=f'{handler(req)}')
 #     )
 
-
 # def main(req: func.HttpRequest) -> func.HttpResponse:
 #     logging.info(f'Start')
 #     handler = Bonnette(app)
@@ -45,10 +46,16 @@ handler = WebhookHandler(channel_secret)
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info(f'Start2')
     # Newsh weather API 呼び出し
-    # response = requests.get(URL)
-    response = requests.get('https://func-newsh-weather-prod-japaneast-001.azurewebsites.net/weather?code=oXiIlbUcEkqlz2W1bejM2Imy3abiWyziRWfs/PrsyZFx3uRv4IFjhg==')
-    logging.info(f'Return is {response.text}')
-    # return response.text
+    # response = requests.get(URL).json()
+    response = requests.get('https://func-newsh-weather-prod-japaneast-001.azurewebsites.net/weather?code=oXiIlbUcEkqlz2W1bejM2Imy3abiWyziRWfs/PrsyZFx3uRv4IFjhg==').json()
+    # logging.info(f'Return is {response.text}')
+    logging.info(f'Return is {response}')
+
+    responseText = f'天気：{response["WeatherDescription"]}\n'
+    responseText += f'気温：{response["Temperature"]} ℃\n'
+    responseText += f'降水確率：{response["Rainfall"]} mm'
+    logging.info(f'Return is {responseText}')
+    # return responseText
 
     # 日時取得
     JST = timezone(timedelta(hours=+9), 'JST')
@@ -57,7 +64,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
      # LINE 通知用にメッセージ整形
     msg_header = f"weather 横浜の天気\n"
     msg_header += f"{jst_timestamp.strftime('%Y年%m月%d日 %H:%M:%S')} 時点\n"
-    msg_body = response.text
+    msg_body = responseText
 
     # LINE 通知
     line_bot_api = LineBotApi(channel_access_token)
