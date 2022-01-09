@@ -2,7 +2,8 @@ name: Python Lint flake8
 
 on:
   push:
-  pull_request:
+    paths:
+      - '*.py'
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
