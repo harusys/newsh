@@ -1,10 +1,11 @@
+import os
+from typing import List
+
+import tweepy
 from azure.identity import VisualStudioCodeCredential
 from azure.keyvault.secrets import SecretClient
 from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import List
-import os
-import tweepy
 
 app = FastAPI()
 
@@ -17,9 +18,7 @@ AT_SECRET = os.environ["TWITTER_ACCESS_TOKEN_SECRET"]
 # ローカル実行時は Key Vault 参照機能不可
 if os.environ["Environment"] == "local":
     credential = VisualStudioCodeCredential()
-    client = SecretClient(
-        vault_url="https://kv-newsh-test-je-001.vault.azure.net",
-        credential=credential)
+    client = SecretClient(vault_url="https://kv-newsh-test-je-001.vault.azure.net", credential=credential)
     # シークレットを直接取得
     API_KEY = client.get_secret("TWITTER-API-KEY").value
     API_SECRET = client.get_secret("TWITTER-API-SECRET").value
