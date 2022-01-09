@@ -19,9 +19,14 @@ TWITTER_TREND_HIGHER_THAN = os.environ["TWITTER_TREND_HIGHER_THAN"]
 # ローカル実行時は Key Vault 参照機能不可
 if os.environ["Environment"] == "local":
     credential = VisualStudioCodeCredential()
-    client = SecretClient(vault_url="https://kv-newsh-test-je-001.vault.azure.net", credential=credential)
+    client = SecretClient(
+        vault_url="https://kv-newsh-test-je-001.vault.azure.net",
+        credential=credential,
+    )
     # シークレットを直接取得
-    LINE_CHANNEL_ACCESS_TOKEN = client.get_secret("LINE-CHANNEL-ACCESS-TOKEN").value
+    LINE_CHANNEL_ACCESS_TOKEN = client.get_secret(
+        "LINE-CHANNEL-ACCESS-TOKEN"
+    ).value
 
 
 class Trend(BaseModel):
@@ -39,7 +44,9 @@ def main(mytimer: func.TimerRequest) -> None:
     JST = timezone(timedelta(hours=+9), "JST")
     jst_timestamp = datetime.now(JST)
 
-    logging.info("Python timer trigger function ran at %s", jst_timestamp.isoformat())
+    logging.info(
+        "Python timer trigger function ran at %s", jst_timestamp.isoformat()
+    )
 
     # Newsh Twitter API (trends) 呼び出し
     response = requests.get(URL).json()
