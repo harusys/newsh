@@ -11,6 +11,8 @@ from linebot import LineBotApi
 from linebot.models import TextSendMessage
 from pydantic import BaseModel, parse_obj_as
 
+from .cosmos_repository import select
+
 # 環境設定
 URL = os.environ["NEWSH_TWITTER_URL"]
 LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
@@ -35,6 +37,9 @@ class Trend(BaseModel):
 
 
 def main(mytimer: func.TimerRequest) -> None:
+
+    # Cosmos DB 疎通確認
+    items = select("1")
 
     # スケジュール遅延確認
     if mytimer.past_due:

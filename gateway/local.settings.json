@@ -1,7 +1,7 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage": "",
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "Environment": "local",
     "ScheduleAppSetting": "0 0 1,12 * * *",
     "TWITTER_TREND_HIGHER_THAN": "20",
