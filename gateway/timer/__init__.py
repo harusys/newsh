@@ -15,6 +15,8 @@ from .cosmosdb import DatabaseConnection
 
 # 環境設定
 URL = os.environ["NEWSH_TWITTER_URL"]
+COSMOS_ENDPOINT = os.environ["COSMOS_ENDPOINT"]
+COSMOS_PRIMARYKEY = os.environ["COSMOS_PRIMARYKEY"]
 LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 TWITTER_TREND_HIGHER_THAN = os.environ["TWITTER_TREND_HIGHER_THAN"]
 
@@ -26,6 +28,8 @@ if os.environ["Environment"] == "local":
         credential=credential,
     )
     # シークレットを直接取得
+    COSMOS_ENDPOINT = client.get_secret("COSMOS-ENDPOINT").value
+    COSMOS_PRIMARYKEY = client.get_secret("COSMOS-PRIMARYKEY").value
     LINE_CHANNEL_ACCESS_TOKEN = client.get_secret(
         "LINE-CHANNEL-ACCESS-TOKEN"
     ).value
@@ -39,8 +43,9 @@ class Trend(BaseModel):
 def main(mytimer: func.TimerRequest) -> None:
 
     # Cosmos DB 疎通確認
-    dbConnection = DatabaseConnection()
-    itemList = dbConnection.read_items()
+    dbConnection = DatabaseConnection(COSMOS_ENDPOINT, COSMOS_PRIMARYKEY)
+    items = dbConnection.timer_manager().query_items("1")
+    print(items)
 
     # スケジュール遅延確認
     if mytimer.past_due:
