@@ -5,7 +5,7 @@ from azure.cosmos import CosmosClient
 from .repository.timer_manager import TimerManagerRepository
 
 
-class DatabaseConnection:
+class DbConnection:
     """データベース接続用クラス"""
 
     def __init__(self, url, credential):

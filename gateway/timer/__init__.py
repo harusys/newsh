@@ -1,6 +1,6 @@
-import logging
 import os
 from datetime import datetime, timedelta, timezone
+from logging import getLogger
 from typing import List
 
 import azure.functions as func
@@ -11,7 +11,7 @@ from linebot import LineBotApi
 from linebot.models import TextSendMessage
 from pydantic import BaseModel, parse_obj_as
 
-from .cosmosdb import DatabaseConnection
+from .cosmosdb import DbConnection
 
 # 環境設定
 COSMOS_ENDPOINT = os.environ["COSMOS_ENDPOINT"]
@@ -36,6 +36,7 @@ if os.environ["Environment"] == "local":
 
 # インスタンス生成
 line = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
+logger = getLogger(__name__)
 
 
 class Trend(BaseModel):
@@ -47,26 +48,32 @@ def main(mytimer: func.TimerRequest) -> None:
 
     # スケジュール遅延確認
     if mytimer.past_due:
-        logging.info("The timer is past due!")
+        logger.info("The timer is past due!")
 
     # 日時取得
     JST = timezone(timedelta(hours=+9), "JST")
     jst_timestamp = datetime.now(JST)
 
-    logging.info(
+    logger.info(
         "Python timer trigger function ran at %s", jst_timestamp.isoformat()
     )
 
-    # Cosmos DB 疎通確認
-    dbConnection = DatabaseConnection(COSMOS_ENDPOINT, COSMOS_PRIMARYKEY)
-    items = dbConnection.timer_manager().find_by_time(jst_timestamp)
-    print(items)
+    # Cosmos DB からタイマー情報を取得
+    dbConn = DbConnection(COSMOS_ENDPOINT, COSMOS_PRIMARYKEY)
+    timers = dbConn.timer_manager().find_by_time(jst_timestamp)
 
-    # Twitter トレンド取得
-    trends = get_twitter_trends()
+    for timer in timers:
+        if timer.task_name == "twitter":
+            # Twitter トレンド取得
+            trends = get_twitter_trends()
 
-    # LINE 通知
-    line.broadcast(TextSendMessage(text=trends))
+            # LINE 通知
+            # ユーザ毎のレコード登録が必要なため、現時点はブロードキャストで通知
+            # line.push_message(timer.user_id, TextSendMessage(text=trends))
+            # logger.info(
+            #     "Twitter push message is completed to {0}", timer.user_id
+            # )
+            line.broadcast(TextSendMessage(text=trends))
 
     # タイマー起動のため応答なし
 
@@ -77,7 +84,7 @@ def get_twitter_trends():
     JST = timezone(timedelta(hours=+9), "JST")
     jst_timestamp = datetime.now(JST)
 
-    logging.info(
+    logger.info(
         "Python timer trigger function ran at %s", jst_timestamp.isoformat()
     )
 
