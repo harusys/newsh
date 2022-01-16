@@ -6,6 +6,8 @@ from .repository.timer_manager import TimerManagerRepository
 
 
 class DatabaseConnection:
+    """データベース接続用クラス"""
+
     def __init__(self, url, credential):
         # Initialize the Cosmos client
         self.client = CosmosClient(
@@ -18,5 +20,6 @@ class DatabaseConnection:
             os.environ["COSMOS_DATABASE"]
         )
 
+    # Container 単位(テーブル単位)でクラス分割
     def timer_manager(self):
         return TimerManagerRepository(self.database)
