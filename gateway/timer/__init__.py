@@ -42,11 +42,6 @@ class Trend(BaseModel):
 
 def main(mytimer: func.TimerRequest) -> None:
 
-    # Cosmos DB 疎通確認
-    dbConnection = DatabaseConnection(COSMOS_ENDPOINT, COSMOS_PRIMARYKEY)
-    items = dbConnection.timer_manager().query_items("1")
-    print(items)
-
     # スケジュール遅延確認
     if mytimer.past_due:
         logging.info("The timer is past due!")
@@ -58,6 +53,11 @@ def main(mytimer: func.TimerRequest) -> None:
     logging.info(
         "Python timer trigger function ran at %s", jst_timestamp.isoformat()
     )
+
+    # Cosmos DB 疎通確認
+    dbConnection = DatabaseConnection(COSMOS_ENDPOINT, COSMOS_PRIMARYKEY)
+    items = dbConnection.timer_manager().find_by_time(jst_timestamp)
+    print(items)
 
     # Newsh Twitter API (trends) 呼び出し
     response = requests.get(URL).json()
