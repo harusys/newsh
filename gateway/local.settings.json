@@ -7,9 +7,9 @@
     "COSMOS_ENDPOINT": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/COSMOS-ENDPOINT/)",
     "COSMOS_PRIMARYKEY": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/COSMOS-PRIMARYKEY/)",
     "COSMOS_DATABASE": "sample",
+    "TWITTER_TREND_URL": "http://localhost:7071/trends",
     "TWITTER_TREND_HIGHER_THAN": "20",
     "FUNCTIONS_WORKER_RUNTIME": "python",
-    "NEWSH_TWITTER_URL": "http://localhost:7071/trends",
     "LINE_CHANNEL_ACCESS_TOKEN": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/LINE-CHANNEL-ACCESS-TOKEN/)"
   },
   "Host": {
