@@ -17,10 +17,6 @@ WEATHER_KEYWORD = os.environ["WEATHER_KEYWORD"]
 LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 
-# インスタンス生成
-handler = WebhookHandler(LINE_CHANNEL_SECRET)
-line = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
-
 # ローカル実行時は Key Vault 参照機能不可
 if os.environ["Environment"] == "local":
     credential = VisualStudioCodeCredential()
@@ -31,6 +27,10 @@ if os.environ["Environment"] == "local":
     LINE_CHANNEL_ACCESS_TOKEN = client.get_secret(
         "LINE-CHANNEL-ACCESS-TOKEN").value
     LINE_CHANNEL_SECRET = client.get_secret("LINE-CHANNEL-SECRET").value
+
+# インスタンス生成
+handler = WebhookHandler(LINE_CHANNEL_SECRET)
+line = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 
 
 class Line(BaseModel):

@@ -15,9 +15,6 @@ LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 TWITTER_TREND_URL = os.environ["TWITTER_TREND_URL"]
 TWITTER_TREND_HIGHER_THAN = os.environ["TWITTER_TREND_HIGHER_THAN"]
 
-# インスタンス生成
-line = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
-
 # ローカル実行時は Key Vault 参照機能不可
 if os.environ["Environment"] == "local":
     credential = VisualStudioCodeCredential()
@@ -27,6 +24,9 @@ if os.environ["Environment"] == "local":
     # シークレットを直接取得
     LINE_CHANNEL_ACCESS_TOKEN = client.get_secret(
         "LINE-CHANNEL-ACCESS-TOKEN").value
+
+# インスタンス生成
+line = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 
 
 class Trend(BaseModel):
