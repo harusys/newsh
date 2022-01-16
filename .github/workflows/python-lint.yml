@@ -1,0 +1,25 @@
+name: Python Lint flake8
+
+on:
+  push:
+    paths:
+      - '*.py'
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  flake8-lint:
+    runs-on: ubuntu-latest
+    name: Lint
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v2
+      - name: Set up Python environment
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.9"
+      - name: Install flake8
+        run: pip install flake8
+      - name: Run flake8 Lint
+        uses: suo/flake8-github-action@releases/v1
