@@ -15,5 +15,14 @@
         "editor.codeActionsOnSave": {
             "source.organizeImports": true
         }
+    },
+    "[typescriptreact]": {
+        // Formatter: Prettier 適用
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        // Linter: ESLint 適用
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": true
+        }
     }
 }
