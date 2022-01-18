@@ -14,6 +14,6 @@ const App: VFC = () => (
       </a>
     </header>
   </div>
-);
+)
 
 export default App
