@@ -1,14 +1,13 @@
 import os
-import string
 from typing import List
 
 from azure.identity import VisualStudioCodeCredential
 from azure.keyvault.secrets import SecretClient
-from fastapi import FastAPI
-
-from models.timer_manager import TimerManager
+from fastapi import FastAPI, status
+from fastapi.responses import JSONResponse
 
 from .cosmosdb import DbConnection
+from .models.timer_manager import TimerManager
 
 app = FastAPI()
 
@@ -31,21 +30,22 @@ if os.environ["Environment"] == "local":
 dbConn = DbConnection(COSMOS_ENDPOINT, COSMOS_PRIMARYKEY)
 
 
-@app.get("/timer_manager/{user_id}")
-async def select(user_id: string) -> List[TimerManager]:
-    dbConn.timer_manager().find_by_userid(user_id)
+@app.get("/timer-manager/{user_id}", response_model=List[TimerManager])
+async def select(user_id: str):
+    return dbConn.timer_manager().find_by_userid(user_id)
 
 
-@app.post("/timer_manager")
+@app.post("/timer-manager")
 async def create(req: TimerManager):
     dbConn.timer_manager().create(req)
+    return JSONResponse(status_code=status.HTTP_201_CREATED)
 
 
-@app.put("/timer_manager")
-async def update(req: TimerManager):
-    dbConn.timer_manager().update(req)
+# @app.put("/timer-manager")
+# async def update(req: TimerManager):
+#     dbConn.timer_manager().update(req)
 
 
-@app.delete("/timer_manager")
-async def delete(user_id: string) -> TimerManager:
-    dbConn.timer_manager().find_by_userid(user_id)
+# @app.delete("/timer-manager")
+# async def delete(user_id: string):
+#     dbConn.timer_manager().delete(user_id)

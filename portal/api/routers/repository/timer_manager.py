@@ -1,3 +1,4 @@
+import os
 import string
 from logging import getLogger
 from typing import List
@@ -14,24 +15,25 @@ class TimerManagerRepository:
     """タイマ管理コンテナ用クラス"""
 
     def __init__(self, database: DatabaseProxy) -> None:
-        self.container = database.get_container_client("TIMER_MANAGER")
+        self.container = database.get_container_client(
+            os.environ["COSMOS_CONTAINER_TIMER_MANAGER"]
+        )
 
-    def find_by_userid(self, user_id: string) -> List[TimerManager]:
+    def find_by_userid(self, user_id: str) -> List[TimerManager]:
         """ユーザ ID 指定で検索"""
         try:
             items = list(
-                self.container.read_item(item=user_id, partition_key=user_id)
-                # self.container.query_items(
-                #     query="SELECT"
-                #     + " c.user_id, c.task_name, c.scheduled_at"
-                #     + " FROM c"
-                #     + " WHERE c.user_id = @user_id",
-                #     parameters=[
-                #         {"name": "@user_id", "value": user_id},
-                #     ],
-                #     # パーティションまたぎ検索は NG
-                #     enable_cross_partition_query=False,
-                # )
+                self.container.query_items(
+                    query="SELECT"
+                    + " c.id, c.user_id, c.task_name, c.scheduled_at"
+                    + " FROM c"
+                    + " WHERE c.user_id = @user_id",
+                    parameters=[
+                        {"name": "@user_id", "value": user_id},
+                    ],
+                    # パーティションまたぎ検索は NG
+                    enable_cross_partition_query=False,
+                )
             )
             # RU は課金に跳ねるためチェック用にログ出力
             request_charge = (
@@ -55,9 +57,10 @@ class TimerManagerRepository:
             raise failure
 
     def create(self, item: TimerManager) -> None:
-        """データ登録"""
+        """スケジュール登録"""
         try:
-            self.container.create_item(item)
+            logger.info("Inserting item {0}".format(item))
+            self.container.create_item(item.dict())
 
             # RU は課金に跳ねるためチェック用にログ出力
             request_charge = (

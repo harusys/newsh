@@ -3,7 +3,11 @@
   "Values": {
     "AzureWebJobsStorage": "",
     "Environment": "local",
-    "FUNCTIONS_WORKER_RUNTIME": "python"
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "COSMOS_ENDPOINT": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/COSMOS-ENDPOINT/)",
+    "COSMOS_PRIMARYKEY": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/COSMOS-PRIMARYKEY/)",
+    "COSMOS_DATABASE": "NEWSH",
+    "COSMOS_CONTAINER_TIMER_MANAGER": "TEST_TIMER_MANAGER"
   },
   "Host": {
     "LocalHttpPort": 8081
