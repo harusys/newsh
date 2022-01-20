@@ -12,8 +12,8 @@ from linebot.models import TextSendMessage
 from pydantic import BaseModel, parse_obj_as
 
 # 環境設定
-URL = os.environ["NEWSH_TWITTER_URL"]
 LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
+TWITTER_TREND_URL = os.environ["TWITTER_TREND_URL"]
 TWITTER_TREND_HIGHER_THAN = os.environ["TWITTER_TREND_HIGHER_THAN"]
 
 # ローカル実行時は Key Vault 参照機能不可
@@ -28,6 +28,9 @@ if os.environ["Environment"] == "local":
         "LINE-CHANNEL-ACCESS-TOKEN"
     ).value
 
+# インスタンス生成
+line = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
+
 
 class Trend(BaseModel):
     name: str
@@ -40,6 +43,17 @@ def main(mytimer: func.TimerRequest) -> None:
     if mytimer.past_due:
         logging.info("The timer is past due!")
 
+    # Twitter トレンド取得
+    trends = get_twitter_trends()
+
+    # LINE 通知
+    line.broadcast(TextSendMessage(text=trends))
+
+    # タイマー起動のため応答なし
+
+
+def get_twitter_trends():
+
     # 日時取得
     JST = timezone(timedelta(hours=+9), "JST")
     jst_timestamp = datetime.now(JST)
@@ -49,7 +63,7 @@ def main(mytimer: func.TimerRequest) -> None:
     )
 
     # Newsh Twitter API (trends) 呼び出し
-    response = requests.get(URL).json()
+    response = requests.get(TWITTER_TREND_URL).json()
     trends = parse_obj_as(List[Trend], response)
 
     # LINE 通知用にメッセージ整形
@@ -60,8 +74,4 @@ def main(mytimer: func.TimerRequest) -> None:
     for i in range(int(TWITTER_TREND_HIGHER_THAN)):
         msg_body += f"\n{i+1}. {trends[i].name}"
 
-    # LINE 通知
-    line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
-    line_bot_api.broadcast(TextSendMessage(text=msg_header + msg_body))
-
-    # タイマー起動のため応答なし
+    return msg_header + msg_body
