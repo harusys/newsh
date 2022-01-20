@@ -1,7 +1,7 @@
 from azure.identity import VisualStudioCodeCredential
 from azure.keyvault.secrets import SecretClient
 from fastapi import FastAPI, Request, HTTPException, Header
-from ..timer import get_twitter_trends
+from ..timer import get_twitter_trends, get_weather
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import TextMessage, MessageEvent, TextSendMessage
@@ -59,8 +59,9 @@ def message_text(event):
         line.reply_message(event.reply_token, TextSendMessage(text=trends))
 
     if event.message.text == WEATHER_KEYWORD:
+        weather = get_weather()
         line.reply_message(event.reply_token,
-                           TextSendMessage(text="リリースまでお待ち下さい。"))
+                           TextSendMessage(text=weather))
 
     else:
         line.reply_message(event.reply_token,
