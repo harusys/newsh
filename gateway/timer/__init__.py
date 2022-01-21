@@ -9,9 +9,10 @@ from azure.identity import VisualStudioCodeCredential
 from azure.keyvault.secrets import SecretClient
 from linebot import LineBotApi
 from linebot.models import TextSendMessage
-from pydantic import BaseModel, parse_obj_as
+from pydantic import parse_obj_as
 
 from .cosmosdb import DbConnection
+from .models.teitter_trend import TwitterTrend
 
 # 環境設定
 COSMOS_ENDPOINT = os.environ["COSMOS_ENDPOINT"]
@@ -37,11 +38,6 @@ if os.environ["Environment"] == "local":
 # インスタンス生成
 line = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 logger = getLogger(__name__)
-
-
-class Trend(BaseModel):
-    name: str
-    tweet_volume: int = None
 
 
 def main(mytimer: func.TimerRequest) -> None:
@@ -90,7 +86,7 @@ def get_twitter_trends():
 
     # Newsh Twitter API (trends) 呼び出し
     response = requests.get(TWITTER_TREND_URL).json()
-    trends = parse_obj_as(List[Trend], response)
+    trends = parse_obj_as(List[TwitterTrend], response)
 
     # LINE 通知用にメッセージ整形
     msg_header = "Twitter 日本のトレンド\n"

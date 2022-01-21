@@ -1,23 +1,23 @@
+import os
 from datetime import datetime, timedelta
 from logging import getLogger
 from typing import List
 
 from azure.cosmos import DatabaseProxy, exceptions
-from pydantic import BaseModel, parse_obj_as
+from pydantic import parse_obj_as
+
+from ..models.timer_manager import TimerManager
 
 logger = getLogger(__name__)
-
-
-class TimerManager(BaseModel):
-    user_id: str
-    task_name: str
 
 
 class TimerManagerRepository:
     """タイマ管理コンテナ用クラス"""
 
     def __init__(self, database: DatabaseProxy) -> None:
-        self.container = database.get_container_client("TIMER_MANAGER")
+        self.container = database.get_container_client(
+            os.environ["COSMOS_CONTAINER_TIMER_MANAGER"]
+        )
 
     def find_by_time(self, current_time: datetime) -> List[TimerManager]:
         """時刻指定で検索（スケジュールは前後 5 分で検索）"""
@@ -63,7 +63,7 @@ class TimerManagerRepository:
 
         except exceptions.CosmosHttpResponseError as failure:
             logger.error(
-                "Failed to create user. Status code:{}".format(
+                "Failed to select timers. Status code:{}".format(
                     failure.status_code
                 )
             )
