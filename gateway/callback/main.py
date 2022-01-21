@@ -63,7 +63,7 @@ def message_text(event):
         trends = get_twitter_trends()
         line.reply_message(event.reply_token, TextSendMessage(text=trends))
 
-    if event.message.text == WEATHER_KEYWORD:
+    elif event.message.text == WEATHER_KEYWORD:
         line.reply_message(
             event.reply_token, TextSendMessage(text="リリースまでお待ち下さい。")
         )
