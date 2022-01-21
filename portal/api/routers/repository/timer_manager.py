@@ -85,7 +85,12 @@ class TimerManagerRepository:
     def update(self, item: TimerManager) -> None:
         """データ更新"""
         try:
-            self.container.replace_item(item)
+            # 更新対象を id 検索で取得
+            read_item = self.container.read_item(
+                item=item.id, partition_key=item.user_id
+            )
+            # データ置換
+            self.container.replace_item(item=read_item, body=item.dict())
 
             # RU は課金に跳ねるためチェック用にログ出力
             request_charge = (
@@ -107,10 +112,12 @@ class TimerManagerRepository:
             )
             raise failure
 
-    def delete(self, user_id: string) -> None:
-        """データ更新"""
+    def delete(self, item: TimerManager) -> None:
+        """データ削除"""
         try:
-            self.container.delete_item(user_id)
+            self.container.delete_item(
+                item=item.id, partition_key=item.user_id
+            )
 
             # RU は課金に跳ねるためチェック用にログ出力
             request_charge = (

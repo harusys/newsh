@@ -32,20 +32,23 @@ dbConn = DbConnection(COSMOS_ENDPOINT, COSMOS_PRIMARYKEY)
 
 @app.get("/timer-manager/{user_id}", response_model=List[TimerManager])
 async def select(user_id: str):
-    return dbConn.timer_manager().find_by_userid(user_id)
+    items = dbConn.timer_manager().find_by_userid(user_id)
+    return items
 
 
 @app.post("/timer-manager")
-async def create(req: TimerManager):
-    dbConn.timer_manager().create(req)
+async def create(item: TimerManager):
+    dbConn.timer_manager().create(item)
     return JSONResponse(status_code=status.HTTP_201_CREATED)
 
 
-# @app.put("/timer-manager")
-# async def update(req: TimerManager):
-#     dbConn.timer_manager().update(req)
+@app.put("/timer-manager")
+async def update(item: TimerManager):
+    dbConn.timer_manager().update(item)
+    return JSONResponse(status_code=status.HTTP_200_OK)
 
 
-# @app.delete("/timer-manager")
-# async def delete(user_id: string):
-#     dbConn.timer_manager().delete(user_id)
+@app.delete("/timer-manager")
+async def delete(item: TimerManager):
+    dbConn.timer_manager().delete(item)
+    return JSONResponse(status_code=status.HTTP_200_OK)
