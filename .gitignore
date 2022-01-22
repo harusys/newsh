@@ -1,5 +1,20 @@
-# Created by https://www.toptal.com/developers/gitignore/api/python,react
-# Edit at https://www.toptal.com/developers/gitignore?templates=python,react
+# Created by https://www.toptal.com/developers/gitignore/api/react,python,azurite
+# Edit at https://www.toptal.com/developers/gitignore?templates=react,python,azurite
+
+### Azurite ###
+# Azurite queue
+__queuestorage__
+__azurite_db_queue__.json
+__azurite_db_queue_extent__.json
+
+# Azurite blob
+__blobstorage__
+__azurite_db_blob__.json
+__azurite_db_blob_extent__.json
+
+# Azurite table
+__azurite_db_table__.json
+__azurite_db_table_extent__.json
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
@@ -170,6 +185,4 @@ psd
 thumb
 sketch
 
-# End of https://www.toptal.com/developers/gitignore/api/python,react
-
-docs/.asciidoctor
+# End of https://www.toptal.com/developers/gitignore/api/react,python,azurite
