@@ -1,13 +1,15 @@
+import os
+from typing import List, Optional
+
 from azure.identity import VisualStudioCodeCredential
 from azure.keyvault.secrets import SecretClient
-from fastapi import FastAPI, Request, HTTPException, Header
-from ..timer import get_twitter_trends
+from fastapi import FastAPI, Header, HTTPException, Request
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import TextMessage, MessageEvent, TextSendMessage
+from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from pydantic import BaseModel
-from typing import List, Optional
-import os
+
+from ..timer import get_twitter_trends
 
 app = FastAPI()
 
@@ -22,10 +24,12 @@ if os.environ["Environment"] == "local":
     credential = VisualStudioCodeCredential()
     client = SecretClient(
         vault_url="https://kv-newsh-test-je-001.vault.azure.net",
-        credential=credential)
+        credential=credential,
+    )
     # シークレットを直接取得
     LINE_CHANNEL_ACCESS_TOKEN = client.get_secret(
-        "LINE-CHANNEL-ACCESS-TOKEN").value
+        "LINE-CHANNEL-ACCESS-TOKEN"
+    ).value
     LINE_CHANNEL_SECRET = client.get_secret("LINE-CHANNEL-SECRET").value
 
 # インスタンス生成
@@ -46,9 +50,10 @@ async def callback(request: Request, x_line_signature: str = Header(None)):
     try:
         handler.handle(body.decode("utf-8"), x_line_signature)
     except InvalidSignatureError:
-        raise HTTPException(status_code=400,
-                            detail="chatbot handle body error.")
-    return 'OK'
+        raise HTTPException(
+            status_code=400, detail="chatbot handle body error."
+        )
+    return "OK"
 
 
 @handler.add(MessageEvent, message=TextMessage)
@@ -58,10 +63,12 @@ def message_text(event):
         trends = get_twitter_trends()
         line.reply_message(event.reply_token, TextSendMessage(text=trends))
 
-    if event.message.text == WEATHER_KEYWORD:
-        line.reply_message(event.reply_token,
-                           TextSendMessage(text="リリースまでお待ち下さい。"))
+    elif event.message.text == WEATHER_KEYWORD:
+        line.reply_message(
+            event.reply_token, TextSendMessage(text="リリースまでお待ち下さい。")
+        )
 
     else:
-        line.reply_message(event.reply_token,
-                           TextSendMessage(text="すみません、\nよく分かりませんでした。"))
+        line.reply_message(
+            event.reply_token, TextSendMessage(text="すみません、\nよく分かりませんでした。")
+        )
