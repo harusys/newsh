@@ -9,7 +9,12 @@ from fastapi.responses import JSONResponse
 from .cosmosdb import DbConnection
 from .models.timer_manager import TimerManager
 
-app = FastAPI()
+# Azure Static Web App 制約でパスは /api 始まりとすること
+app = FastAPI(
+    docs_url="/api/docs/swagger",
+    redoc_url="/api/docs/redoc",
+    openapi_url="/api/docs/openapi.json",
+)
 
 # 環境設定
 COSMOS_ENDPOINT = os.environ["COSMOS_ENDPOINT"]
