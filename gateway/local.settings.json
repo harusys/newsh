@@ -3,7 +3,7 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "Environment": "local",
-    "ScheduleAppSetting": "* */15 * * * *",
+    "ScheduleAppSetting": "0 */15 * * * *",
     "COSMOS_ENDPOINT": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/COSMOS-ENDPOINT/)",
     "COSMOS_PRIMARYKEY": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/COSMOS-PRIMARYKEY/)",
     "COSMOS_DATABASE": "NEWSH",
