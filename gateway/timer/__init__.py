@@ -67,7 +67,7 @@ def main(mytimer: func.TimerRequest) -> None:
             # ユーザ毎のレコード登録が必要なため、現時点はブロードキャストで通知
             # line.push_message(timer.user_id, TextSendMessage(text=trends))
             # logger.info(
-            #     "Twitter push message is completed to {0}", timer.user_id
+            #     "Twitter push message is completed to %s", timer.user_id
             # )
             line.broadcast(TextSendMessage(text=trends))
 
