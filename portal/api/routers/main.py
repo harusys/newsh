@@ -30,25 +30,26 @@ if os.environ["Environment"] == "local":
 dbConn = DbConnection(COSMOS_ENDPOINT, COSMOS_PRIMARYKEY)
 
 
-@app.get("/timer-manager/{user_id}", response_model=List[TimerManager])
+# Azure Static Web App 制約でパスは /api 始まりとすること
+@app.get("/api/timer-manager/{user_id}", response_model=List[TimerManager])
 async def select(user_id: str):
     items = dbConn.timer_manager().find_by_userid(user_id)
     return items
 
 
-@app.post("/timer-manager")
+@app.post("/api/timer-manager")
 async def create(item: TimerManager):
     dbConn.timer_manager().create(item)
     return JSONResponse(status_code=status.HTTP_201_CREATED)
 
 
-@app.put("/timer-manager")
+@app.put("/api/timer-manager")
 async def update(item: TimerManager):
     dbConn.timer_manager().update(item)
     return JSONResponse(status_code=status.HTTP_200_OK)
 
 
-@app.delete("/timer-manager")
+@app.delete("/api/timer-manager")
 async def delete(item: TimerManager):
     dbConn.timer_manager().delete(item)
     return JSONResponse(status_code=status.HTTP_200_OK)
