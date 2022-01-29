@@ -3,7 +3,6 @@ import { VFC, useState, useEffect } from 'react'
 // import Avatar from 'react-avatar';
 // import Grid from '@material-ui/core/Grid'
 
-// import MaterialTable from "material-table";
 // import AddBox from '@material-ui/icons/AddBox';
 // import ArrowDownward from '@material-ui/icons/ArrowDownward';
 // import Check from '@material-ui/icons/Check';
@@ -20,129 +19,123 @@ import { VFC, useState, useEffect } from 'react'
 // import Search from '@material-ui/icons/Search';
 // import ViewColumn from '@material-ui/icons/ViewColumn';
 import axios from 'axios'
+import MaterialTable from 'material-table'
 // import Alert from '@material-ui/lab/Alert';
 
 const api = axios.create({
-  baseURL: `https://reqres.in/api`,
+  baseURL: `http://localhost:8081/`,
+  responseType: 'json',
 })
+
+export type ModelItem = Pick<Model, 'id' | 'user_id' | 'task_name' | 'scheduled_at'>
+
+export interface Model {
+  id: string
+  user_id: string
+  task_name: string
+  scheduled_at: string
+}
 
 const App: VFC = () => {
   type IType = 'string' | 'boolean' | 'numeric' | 'date' | 'datetime' | 'time' | 'currency'
   const string: IType = 'string'
 
-  const columns = useState([
-    { title: 'Name', field: 'name', type: 'string' as const },
-    {
-      title: 'Surname',
-      field: 'surname',
-      initialEditValue: 'initial edit value',
-      type: 'string' as const,
-    },
-    { title: 'Birth Year', field: 'birthYear', type: 'string' as const },
-    {
-      title: 'Birth Place',
-      field: 'birthCity',
-      lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-      type: 'string' as const,
-    },
+  const [columns, setColumns] = useState([
+    { title: 'ID', field: 'id' },
+    { title: 'ユーザID', field: 'user_id', hidden: true },
+    { title: 'コンテンツ名', field: 'task_name' },
+    { title: '通知時刻', field: 'scheduled_at' },
   ])
 
-  const [data, setData] = useState([
-    {
-      name: 'Mehmet',
-      surname: 'Baran',
-      birthYear: 1987,
-      birthCity: 63,
-      type: string,
-    },
-    {
-      name: 'Zerya Betül',
-      surname: 'Baran',
-      birthYear: 2017,
-      birthCity: 34,
-      type: string,
-    },
-  ])
+  const [data, setData] = useState<Array<ModelItem>>([])
 
   // for error handling
   const [iserror, setIserror] = useState(false)
-  const [errorMessages, setErrorMessages] = useState([])
+  const [errorMessages, setErrorMessages] = useState<Array<string>>([])
 
   useEffect(() => {
     api
-      .get('/users')
-      .then((res) => {
-        setData(res.data.data)
+      .get<Array<Model>>('/api/timer-manager/Ud9f705bf1ae17b6111b1b5353b00eaf7')
+      .then((response) => {
+        setData(
+          response.data.map<ModelItem>((d) => ({
+            id: d.id,
+            user_id: d.user_id,
+            task_name: d.task_name,
+            scheduled_at: d.scheduled_at,
+          }))
+        )
       })
-      .catch((error) => {
-        console.log('Error')
+      .catch((e: unknown) => {
+        if (e instanceof Error) {
+          setErrorMessages([e.message])
+          setIserror(true)
+        }
       })
   }, [])
 
-  const handleRowUpdate = (newData, oldData, resolve) => {
+  const handleRowUpdate = (newData: ModelItem, oldData: ModelItem | undefined) => {
     // validation
     const errorList = []
-    if (newData.name === '') {
-      errorList.push('Please enter name')
+    if (newData.task_name === '') {
+      errorList.push('Please enter task name')
     }
-    if (newData.surname === '') {
-      errorList.push('Please enter surname')
+    if (newData.scheduled_at === '') {
+      errorList.push('Please enter scheduled at')
     }
 
     if (errorList.length < 1) {
       api
-        .patch(`/users/${newData.id}`, newData)
-        .then((res) => {
-          const dataUpdate = [...data]
-          const index = oldData.tableData.id
-          dataUpdate[index] = newData
-          setData([...dataUpdate])
-          resolve()
-          setIserror(false)
-          setErrorMessages([])
+        .patch(`/api/timer-manager/${newData.id}`, newData)
+        .then((response) => {
+          //   const dataUpdate = [...data]
+          //   const index = oldData.id
+          //   dataUpdate[index] = newData
+          //   setData([...dataUpdate])
+          //   setIserror(false)
+          //   setErrorMessages([])
         })
-        .catch((error) => {
-          setErrorMessages(['Update failed! Server error'])
-          setIserror(true)
-          resolve()
+        .catch((e: unknown) => {
+          if (e instanceof Error) {
+            setErrorMessages([e.message])
+            setIserror(true)
+          }
         })
     } else {
       setErrorMessages(errorList)
       setIserror(true)
-      resolve()
     }
   }
 
-  const handleRowAdd = (newData, resolve) => {
+  const handleRowAdd = (newData: ModelItem) => {
     // 検証
     const errorList = []
-    if (newData.name === undefined) {
-      errorList.push('名を入力してください')
+    if (newData.task_name === undefined) {
+      errorList.push('コンテンツ名を入力してください')
     }
-    if (newData.name === undefined) {
-      errorList.push('名を入力してください')
+    if (newData.scheduled_at === undefined) {
+      errorList.push('通知時刻を入力してください')
     }
     if (errorList.length < 1) {
       // エラー
       api
-        .post('/ users', newData)
+        .post('/api/timer-manager', newData)
         .then((res) => {
           const dataToAdd = [...data]
           dataToAdd.push(newData)
           setData(dataToAdd)
-          resolve()
           setErrorMessages([])
           setIserror(false)
         })
-        .catch((error) => {
-          setErrorMessages(['Cannotadddata。Servererror！'])
-          setIserror(true)
-          resolve()
+        .catch((e: unknown) => {
+          if (e instanceof Error) {
+            setErrorMessages([e.message])
+            setIserror(true)
+          }
         })
     } else {
       setErrorMessages(errorList)
       setIserror(true)
-      resolve()
     }
   }
 
@@ -156,36 +149,18 @@ const App: VFC = () => {
         columns={columns}
         data={data}
         editable={{
-          onRowAdd: (newData) =>
+          onRowAdd: (newData: ModelItem) =>
             new Promise((resolve) => {
-              setTimeout(() => {
-                setData([...data, newData])
-
-                resolve()
-              }, 1000)
+              handleRowAdd(newData)
             }),
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const dataUpdate = [...data]
-                const index = oldData.tableData.id
-                dataUpdate[index] = newData
-                setData([...dataUpdate])
-
-                resolve()
-              }, 1000)
+          onRowUpdate: (newData: ModelItem, oldData) =>
+            new Promise((resolve) => {
+              handleRowUpdate(newData, oldData)
             }),
-          onRowDelete: (oldData) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const dataDelete = [...data]
-                const index = oldData.tableData.id
-                dataDelete.splice(index, 1)
-                setData([...dataDelete])
-
-                resolve()
-              }, 1000)
-            }),
+          //   onRowDelete: (oldData: Model) =>
+          //     new Promise((resolve) => {
+          //       handleRowDelete(oldData)
+          //     }),
         }}
       />
     </div>
