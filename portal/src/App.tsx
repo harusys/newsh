@@ -23,7 +23,7 @@ import MaterialTable from 'material-table'
 // import Alert from '@material-ui/lab/Alert';
 
 const api = axios.create({
-  baseURL: `http://localhost:8081/`,
+  baseURL: `http://localhost:8081`,
   responseType: 'json',
 })
 
@@ -153,7 +153,7 @@ const App: VFC = () => {
             new Promise((resolve) => {
               handleRowAdd(newData)
             }),
-          onRowUpdate: (newData: ModelItem, oldData) =>
+          onRowUpdate: (newData: ModelItem, oldData: ModelItem | undefined) =>
             new Promise((resolve) => {
               handleRowUpdate(newData, oldData)
             }),
