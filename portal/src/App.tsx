@@ -2,7 +2,7 @@ import { VFC, useState, useEffect, forwardRef } from 'react'
 // import Avatar from 'react-avatar';
 // import Grid from '@material-ui/core/Grid'
 
-import MaterialTable from 'material-table'
+import MaterialTable, { Icons } from 'material-table'
 import AddBox from '@material-ui/icons/AddBox'
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
 import Check from '@material-ui/icons/Check'
@@ -20,7 +20,8 @@ import Search from '@material-ui/icons/Search'
 import ViewColumn from '@material-ui/icons/ViewColumn'
 import axios from 'axios'
 
-const tableIcons = {
+const tableIcons: Icons = {
+  /* eslint-disable react/jsx-props-no-spreading */
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
@@ -38,6 +39,7 @@ const tableIcons = {
   SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
+  /* eslint-enable react/jsx-props-no-spreading */
 }
 
 const api = axios.create({
