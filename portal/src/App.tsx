@@ -2,7 +2,7 @@ import { VFC, useState, useEffect, forwardRef } from 'react'
 // import Avatar from 'react-avatar';
 // import Grid from '@material-ui/core/Grid'
 
-import MaterialTable, { Icons } from 'material-table'
+import MaterialTable, { Icons } from '@material-table/core'
 import AddBox from '@material-ui/icons/AddBox'
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
 import Check from '@material-ui/icons/Check'
@@ -56,8 +56,8 @@ export interface Model {
 }
 
 const App: VFC = () => {
-  type IType = 'string' | 'boolean' | 'numeric' | 'date' | 'datetime' | 'time' | 'currency'
-  const string: IType = 'string'
+  //   type IType = 'string' | 'boolean' | 'numeric' | 'date' | 'datetime' | 'time' | 'currency'
+  //   const string: IType = 'string'
 
   const [columns, setColumns] = useState([
     { title: 'ID', field: 'id' },
