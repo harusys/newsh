@@ -13,26 +13,27 @@ app = FastAPI()
 
 # 環境設定
 # OpenWeatherAPI
-API_KEY = os.getenv("OPEN_WEATHER_API_KEY")
-BASE_URL = os.getenv("OPEN_WEATHER_API_BASE_URL")
-city = os.getenv("CITY_NAME")
+API_KEY = os.environ["OPEN_WEATHER_API_KEY"]
+BASE_URL = os.environ["OPEN_WEATHER_API_BASE_URL"]
+city = os.environ["CITY_NAME"]
 # TODO:LINEから都市を指定
 # city = event.message.text
 
 # ローカル実行時は Key Vault 参照機能不可
-if os.getenv("Environment") == "local":
+if os.environ["Environment"] == "local":
     credential = VisualStudioCodeCredential()
     client = SecretClient(
-        vault_url="https://kv-newsh-prod-je-001.vault.azure.net",
+        vault_url="https://kv-newsh-test-je-001.vault.azure.net",
         credential=credential,
     )
     # シークレットを直接取得
     API_KEY = client.get_secret("OPEN-WEATHER-API-KEY").value
 
-# TODO:クラス設定
+
 # モデルで必要な情報を絞り込み
+# TODO:クラス設定
 class Weather(BaseModel):
-    weather: str
+    weather: dict
 
 
 @app.get("/weather", response_model=List[Weather])
@@ -44,13 +45,12 @@ async def weather_get():
     )
     forecastData = json.loads(response.text)
 
-    for item in forecastData["list"]:
-        # TODO: 複数の時間での天気情報取得
-        weatherDescription = item["weather"][0]["description"]
-        temperature = item["main"]["temp"]
-        rainfall = 0
-        if "rain" in item and "3h" in item["rain"]:
-            rainfall = item["rain"]["3h"]
+    # TODO: 複数の時間での天気情報取得
+    weatherDescription = forecastData[-1]["weather"][0]["description"]
+    temperature = forecastData[-1]["main"]["temp"]
+    rainfall = 0
+    if "rain" in forecastData[-1] and "3h" in forecastData[-1]["rain"]:
+        rainfall = forecastData[-1]["rain"]["3h"]
 
     weatherList = {}
     weatherList["WeatherDescription"] = weatherDescription
