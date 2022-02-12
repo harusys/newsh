@@ -7,7 +7,7 @@ import requests
 from azure.identity import VisualStudioCodeCredential
 from azure.keyvault.secrets import SecretClient
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, parse_obj_as
 
 app = FastAPI()
 
@@ -31,9 +31,10 @@ if os.environ["Environment"] == "local":
 
 
 # モデルで必要な情報を絞り込み
-# TODO:クラス設定
 class Weather(BaseModel):
-    weather: dict
+    weather_description: str
+    temperature: float
+    rainfall: float
 
 
 @app.get("/weather", response_model=List[Weather])
@@ -44,13 +45,17 @@ async def weather_get():
         f"{BASE_URL}?q={city}&units=metric&lang=ja&APPID={API_KEY}"
     )
     forecastData = json.loads(response.text)
+    forecastData_items = parse_obj_as(List[Weather], forecastData)
 
     # TODO: 複数の時間での天気情報取得
-    weatherDescription = forecastData[-1]["weather"][0]["description"]
-    temperature = forecastData[-1]["main"]["temp"]
+    weatherDescription = forecastData_items[-1]["weather"][0]["description"]
+    temperature = forecastData_items[-1]["main"]["temp"]
     rainfall = 0
-    if "rain" in forecastData[-1] and "3h" in forecastData[-1]["rain"]:
-        rainfall = forecastData[-1]["rain"]["3h"]
+    if (
+        "rain" in forecastData_items[-1]
+        and "3h" in forecastData_items[-1]["rain"]
+    ):
+        rainfall = forecastData_items[-1]["rain"]["3h"]
 
     weatherList = {}
     weatherList["WeatherDescription"] = weatherDescription

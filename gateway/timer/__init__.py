@@ -10,6 +10,7 @@ from azure.keyvault.secrets import SecretClient
 from linebot import LineBotApi
 from linebot.models import TextSendMessage
 from pydantic import BaseModel, parse_obj_as
+from weather import weather
 
 # 環境設定
 LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
@@ -37,6 +38,12 @@ line = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 class Trend(BaseModel):
     name: str
     tweet_volume: int = None
+
+
+class Weather(BaseModel):
+    weather_description: str
+    temperature: float
+    rainfall: float
 
 
 def main(mytimer: func.TimerRequest) -> None:
@@ -82,17 +89,19 @@ def get_twitter_trends():
 
     return msg_header + msg_body
 
+
 def get_weather():
 
     # 日時取得
-    JST = timezone(timedelta(hours=+9), 'JST')
+    JST = timezone(timedelta(hours=+9), "JST")
     jst_timestamp = datetime.now(JST)
 
     # Newsh weather API 呼び出し
     response = requests.get(WEATHER_URL).json()
-    responseText = f'天気：{response["WeatherDescription"]}\n'
-    responseText += f'気温：{response["Temperature"]} ℃\n'
-    responseText += f'降水確率：{response["Rainfall"]} mm'
+    weather_response = parse_obj_as(List[Weather], response)
+    responseText = f'天気：{weather_response["WeatherDescription"]}\n'
+    responseText += f'気温：{weather_response["Temperature"]} ℃\n'
+    responseText += f'降水確率：{weather_response["Rainfall"]} mm'
 
     # LINE 通知用にメッセージ整形
     msg_header = f"weather 横浜の天気\n"
@@ -100,4 +109,3 @@ def get_weather():
     msg_body = responseText
 
     return msg_header + msg_body
-
