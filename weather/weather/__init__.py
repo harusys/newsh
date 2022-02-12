@@ -1,6 +1,5 @@
 import azure.functions as func
 from bonnette import Bonnette
-import logging
 
 from .main import app
 
