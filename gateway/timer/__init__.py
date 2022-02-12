@@ -10,7 +10,6 @@ from azure.keyvault.secrets import SecretClient
 from linebot import LineBotApi
 from linebot.models import TextSendMessage
 from pydantic import BaseModel, parse_obj_as
-from weather import weather
 
 # 環境設定
 LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
@@ -104,7 +103,7 @@ def get_weather():
     responseText += f'降水確率：{weather_response["Rainfall"]} mm'
 
     # LINE 通知用にメッセージ整形
-    msg_header = f"weather 横浜の天気\n"
+    msg_header = "weather 横浜の天気\n"
     msg_header += f"{jst_timestamp.strftime('%Y年%m月%d日 %H:%M:%S')} 時点\n"
     msg_body = responseText
 

@@ -4,13 +4,12 @@ from typing import List, Optional
 from azure.identity import VisualStudioCodeCredential
 from azure.keyvault.secrets import SecretClient
 from fastapi import FastAPI, Header, HTTPException, Request
-
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from pydantic import BaseModel
 
-from ..timer import get_twitter_trends
+from ..timer import get_twitter_trends, get_weather
 
 app = FastAPI()
 
@@ -66,8 +65,7 @@ def message_text(event):
 
     if event.message.text == WEATHER_KEYWORD:
         weather = get_weather()
-        line.reply_message(event.reply_token,
-                           TextSendMessage(text=weather))
+        line.reply_message(event.reply_token, TextSendMessage(text=weather))
 
     else:
         line.reply_message(
