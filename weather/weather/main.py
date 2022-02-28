@@ -37,6 +37,18 @@ class Weather(BaseModel):
     rainfall: float
 
 
+class WeatherGet2(BaseModel):
+    weather_description: str    
+    temperature: float
+    rainfall: float
+
+
+class WeatherGet(BaseModel):
+    weather_description: WeatherGet2
+    temperature: float
+    rainfall: float
+
+
 @app.get("/weather", response_model=List[Weather])
 async def weather_get():
 
@@ -48,7 +60,7 @@ async def weather_get():
     forecastData_items = parse_obj_as(List[Weather], forecastData)
 
     # TODO: 複数の時間での天気情報取得
-    weatherDescription = forecastData_items[-1]["weather"][0]["description"]
+    weatherDescription = forecastData_items[-1].weather_description
     temperature = forecastData_items[-1]["main"]["temp"]
     rainfall = 0
     if (
