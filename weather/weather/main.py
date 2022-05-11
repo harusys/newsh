@@ -16,7 +16,6 @@ app = FastAPI()
 API_KEY = os.environ["OPEN_WEATHER_API_KEY"]
 BASE_URL = os.environ["OPEN_WEATHER_API_BASE_URL"]
 city = os.environ["CITY_NAME"]
-# TODO:LINEから都市を指定
 # city = event.message.text
 
 # ローカル実行時は Key Vault 参照機能不可
@@ -38,7 +37,7 @@ class Weather(BaseModel):
 
 
 class WeatherGet2(BaseModel):
-    weather_description: str    
+    weather_description: str
     temperature: float
     rainfall: float
 
@@ -52,7 +51,7 @@ class WeatherGet(BaseModel):
 @app.get("/weather", response_model=List[Weather])
 async def weather_get():
 
-    # トレンドを取得
+    # 天気情報を取得
     response = requests.get(
         f"{BASE_URL}?q={city}&units=metric&lang=ja&APPID={API_KEY}"
     )
