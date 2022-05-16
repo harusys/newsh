@@ -40,9 +40,10 @@ class Trend(BaseModel):
 
 
 class Weather(BaseModel):
-    weather_description: str
-    temperature: float
-    rainfall: float
+    WeatherDescription: str
+    Temperature: float
+    MaxTemperature: float
+    MinTemperature: float
 
 
 def main(mytimer: func.TimerRequest) -> None:
@@ -96,11 +97,10 @@ def get_weather():
     jst_timestamp = datetime.now(JST)
 
     # Newsh weather API 呼び出し
-    response = requests.get(WEATHER_URL).json()
+    response = requests.get("http://localhost:7072/weather").json()
     weather_response = parse_obj_as(List[Weather], response)
-    responseText = f'天気：{weather_response["WeatherDescription"]}\n'
-    responseText += f'気温：{weather_response["Temperature"]} ℃\n'
-    responseText += f'降水確率：{weather_response["Rainfall"]} mm'
+    responseText = f"天気：{weather_response[0].WeatherDescription}\n"
+    responseText += f"気温：{weather_response[0].Temperature} ℃\n"
 
     # LINE 通知用にメッセージ整形
     msg_header = "weather 横浜の天気\n"
