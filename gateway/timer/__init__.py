@@ -16,6 +16,8 @@ LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 TWITTER_TREND_URL = os.environ["TWITTER_TREND_URL"]
 TWITTER_TREND_HIGHER_THAN = os.environ["TWITTER_TREND_HIGHER_THAN"]
 
+WEATHER_URL = os.getenv("WEATHER_URL")
+
 # ローカル実行時は Key Vault 参照機能不可
 if os.environ["Environment"] == "local":
     credential = VisualStudioCodeCredential()
@@ -37,6 +39,13 @@ class Trend(BaseModel):
     tweet_volume: int = None
 
 
+class Weather(BaseModel):
+    WeatherDescription: str
+    Temperature: float
+    MaxTemperature: float
+    MinTemperature: float
+
+
 def main(mytimer: func.TimerRequest) -> None:
 
     # スケジュール遅延確認
@@ -46,8 +55,12 @@ def main(mytimer: func.TimerRequest) -> None:
     # Twitter トレンド取得
     trends = get_twitter_trends()
 
+    # weather 天気取得
+    weather = get_weather()
+
     # LINE 通知
     line.broadcast(TextSendMessage(text=trends))
+    line.broadcast(TextSendMessage(text=weather))
 
     # タイマー起動のため応答なし
 
@@ -73,5 +86,25 @@ def get_twitter_trends():
 
     for i in range(int(TWITTER_TREND_HIGHER_THAN)):
         msg_body += f"\n{i+1}. {trends[i].name}"
+
+    return msg_header + msg_body
+
+
+def get_weather():
+
+    # 日時取得
+    JST = timezone(timedelta(hours=+9), "JST")
+    jst_timestamp = datetime.now(JST)
+
+    # Newsh weather API 呼び出し
+    response = requests.get("http://localhost:7072/weather").json()
+    weather_response = parse_obj_as(List[Weather], response)
+    responseText = f"天気：{weather_response[0].WeatherDescription}\n"
+    responseText += f"気温：{weather_response[0].Temperature} ℃\n"
+
+    # LINE 通知用にメッセージ整形
+    msg_header = "weather 横浜の天気\n"
+    msg_header += f"{jst_timestamp.strftime('%Y年%m月%d日 %H:%M:%S')} 時点\n"
+    msg_body = responseText
 
     return msg_header + msg_body

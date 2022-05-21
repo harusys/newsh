@@ -10,6 +10,7 @@
     "TWITTER_TREND_KEYWORD": "Twitterトレンドを知りたい",
     "LINE_CHANNEL_ACCESS_TOKEN": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/LINE-CHANNEL-ACCESS-TOKEN/)",
     "LINE_CHANNEL_SECRET": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/LINE-CHANNEL-SECRET/)",
+    "WEATHER_URL":"http://localhost:7071/weather",
     "WEATHER_TREND_KEYWORD": "天気情報を知りたい"
   },
   "Host": {
