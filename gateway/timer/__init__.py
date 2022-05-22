@@ -85,7 +85,8 @@ def get_twitter_trends():
     msg_body = ""
 
     for i in range(int(TWITTER_TREND_HIGHER_THAN)):
-        msg_body += f"\n{i+1}. {trends[i].name}"
+        msg_body += f"\n{i+1}. {trends[i].name}\n"
+        msg_body += f"詳細:https://twitter.com/search?q={trends[i].name}"
 
     return msg_header + msg_body
 
@@ -97,7 +98,7 @@ def get_weather():
     jst_timestamp = datetime.now(JST)
 
     # Newsh weather API 呼び出し
-    response = requests.get("http://localhost:7072/weather").json()
+    response = requests.get(WEATHER_URL).json()
     weather_response = parse_obj_as(List[Weather], response)
     responseText = f"天気：{weather_response[0].WeatherDescription}\n"
     responseText += f"気温：{weather_response[0].Temperature} ℃\n"
