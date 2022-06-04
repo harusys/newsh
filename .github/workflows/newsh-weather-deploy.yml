@@ -1,4 +1,4 @@
-name: Newsh Twitter Deploy
+name: Newsh Weather Deploy
 on:
   push:
     tags:
