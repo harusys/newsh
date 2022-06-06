@@ -79,7 +79,7 @@ def main(mytimer: func.TimerRequest) -> None:
 
             # LINE 通知
             # ユーザ毎のレコード登録が必要なため、現時点はブロードキャストで通知
-            # line.push_message(timer.user_id, TextSendMessage(text=trends))
+            # line.push_message(timer.user_id, TextSendMessage(text=weather))
             # logger.info(
             #     "Weather push message is completed to %s", timer.user_id
             # )
@@ -125,7 +125,7 @@ def get_weather():
     response = requests.get(WEATHER_URL).json()
     weather_response = parse_obj_as(List[Weather], response)
     responseText = f"天気：{weather_response[0].WeatherDescription}\n"
-    responseText += f"気温：{weather_response[0].Temperature} ℃\n"
+    responseText += f"気温：{weather_response[0].Temperature} ℃"
 
     # LINE 通知用にメッセージ整形
     msg_header = "weather 横浜の天気\n"
