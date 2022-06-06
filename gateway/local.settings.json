@@ -15,7 +15,7 @@
     "LINE_CHANNEL_SECRET": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/LINE-CHANNEL-SECRET/)",
     "ScheduleAppSetting": "0 */15 * * * *",
     "WEATHER_URL":"http://localhost:7072/weather",
-    "WEATHER_TREND_KEYWORD": "天気情報を知りたい"
+    "WEATHER_KEYWORD": "天気情報を知りたい"
   },
   "Host": {
     "LocalHttpPort": 7070

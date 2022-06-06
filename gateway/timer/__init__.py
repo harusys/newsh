@@ -21,8 +21,7 @@ COSMOS_PRIMARYKEY = os.environ["COSMOS_PRIMARYKEY"]
 LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 TWITTER_TREND_URL = os.environ["TWITTER_TREND_URL"]
 TWITTER_TREND_HIGHER_THAN = os.environ["TWITTER_TREND_HIGHER_THAN"]
-
-WEATHER_URL = os.getenv("WEATHER_URL")
+WEATHER_URL = os.environ["WEATHER_URL"]
 
 # ローカル実行時は Key Vault 参照機能不可
 if os.environ["Environment"] == "local":
