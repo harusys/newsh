@@ -3,7 +3,7 @@ name: Python Lint flake8
 on:
   push:
     paths:
-      - '*.py'
+      - '**.py'
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

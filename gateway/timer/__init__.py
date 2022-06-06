@@ -12,7 +12,8 @@ from linebot.models import TextSendMessage
 from pydantic import parse_obj_as
 
 from .cosmosdb import DbConnection
-from .models.teitter_trend import TwitterTrend
+from .models.twitter_trend import TwitterTrend
+from .models.weather import Weather
 
 # 環境設定
 COSMOS_ENDPOINT = os.environ["COSMOS_ENDPOINT"]
@@ -20,6 +21,8 @@ COSMOS_PRIMARYKEY = os.environ["COSMOS_PRIMARYKEY"]
 LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 TWITTER_TREND_URL = os.environ["TWITTER_TREND_URL"]
 TWITTER_TREND_HIGHER_THAN = os.environ["TWITTER_TREND_HIGHER_THAN"]
+
+WEATHER_URL = os.getenv("WEATHER_URL")
 
 # ローカル実行時は Key Vault 参照機能不可
 if os.environ["Environment"] == "local":
@@ -71,7 +74,20 @@ def main(mytimer: func.TimerRequest) -> None:
             # )
             line.broadcast(TextSendMessage(text=trends))
 
+        if timer.task_name == "weather":
+            # Weather 情報取得
+            weather = get_weather()
+
+            # LINE 通知
+            # ユーザ毎のレコード登録が必要なため、現時点はブロードキャストで通知
+            # line.push_message(timer.user_id, TextSendMessage(text=trends))
+            # logger.info(
+            #     "Weather push message is completed to %s", timer.user_id
+            # )
+            line.broadcast(TextSendMessage(text=weather))
+
     # タイマー起動のため応答なし
+    return None
 
 
 def get_twitter_trends():
@@ -94,6 +110,27 @@ def get_twitter_trends():
     msg_body = ""
 
     for i in range(int(TWITTER_TREND_HIGHER_THAN)):
-        msg_body += f"\n{i+1}. {trends[i].name}"
+        msg_body += f"\n{i+1}. {trends[i].name}\n"
+        msg_body += f"詳細:https://twitter.com/search?q={trends[i].name}"
+
+    return msg_header + msg_body
+
+
+def get_weather():
+
+    # 日時取得
+    JST = timezone(timedelta(hours=+9), "JST")
+    jst_timestamp = datetime.now(JST)
+
+    # Newsh weather API 呼び出し
+    response = requests.get(WEATHER_URL).json()
+    weather_response = parse_obj_as(List[Weather], response)
+    responseText = f"天気：{weather_response[0].WeatherDescription}\n"
+    responseText += f"気温：{weather_response[0].Temperature} ℃\n"
+
+    # LINE 通知用にメッセージ整形
+    msg_header = "weather 横浜の天気\n"
+    msg_header += f"{jst_timestamp.strftime('%Y年%m月%d日 %H:%M:%S')} 時点\n"
+    msg_body = responseText
 
     return msg_header + msg_body

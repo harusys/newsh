@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "Environment": "local",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "OPEN_WEATHER_API_KEY":"@Microsoft.KeyVault(SecretUri=https://kv-newsh-test-je-001.vault.azure.net//secrets/OPEN-WEATHER-API-KEY/)",
+    "OPEN_WEATHER_API_BASE_URL":"http://api.openweathermap.org/data/2.5/forecast",
+    "CITY_NAME":"yokohama"
+  },
+  "Host": {
+    "LocalHttpPort": 7072
+  }
+}

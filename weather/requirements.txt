@@ -1,0 +1,6 @@
+azure-functions
+bonnette
+fastapi
+line-bot-sdk
+azure-identity
+azure-keyvault-secrets
