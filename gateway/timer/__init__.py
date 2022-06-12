@@ -110,7 +110,8 @@ def get_twitter_trends():
 
     for i in range(int(TWITTER_TREND_HIGHER_THAN)):
         msg_body += f"\n{i+1}. {trends[i].name}\n"
-        msg_body += f"詳細:https://twitter.com/search?q={trends[i].name}"
+
+    msg_body += f"最もホットなトレンドの詳細:https://twitter.com/search?q={trends[0].name}"
 
     return msg_header + msg_body
 
