@@ -1,7 +1,0 @@
-name: GitHub Pages
-
-on:
-  push:
-    paths:
-      - '**.py'
-
