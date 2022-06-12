@@ -3,4 +3,7 @@
 FROM mcr.microsoft.com/azure-functions/python:3.0-python3.8-core-tools
 
 #RUN pip install fastapi uvicorn[standard]
-RUN pip install azure-functions bonnette fastapi tweepy
+RUN pip install azure-functions bonnette fastapi
+
+#RUN pip install other module for Newsh
+RUN pip install tweepy line-bot-sdk azure-identity azure-keyvault-secrets flake8
