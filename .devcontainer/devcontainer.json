@@ -23,8 +23,9 @@
 		"GitHub.copilot",
 		"oderwat.indent-rainbow",
 		"PKief.material-icon-theme",
-		"esbenp.prettier-vscode"
-	],
+		"esbenp.prettier-vscode",
+		"Gruntfuggly.todo-tree"
+	]
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
