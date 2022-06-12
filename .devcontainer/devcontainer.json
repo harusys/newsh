@@ -16,7 +16,14 @@
 	"extensions": [
 		"ms-azuretools.vscode-azurefunctions",
 		"ms-azuretools.vscode-docker",
-		"ms-python.python"
+		"ms-python.python",
+		"Azurite.azurite",
+		"usernamehw.errorlens",
+		"dbaeumer.vscode-eslint",
+		"GitHub.copilot",
+		"oderwat.indent-rainbow",
+		"PKief.material-icon-theme",
+		"esbenp.prettier-vscode"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

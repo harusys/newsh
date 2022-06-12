@@ -1,5 +1,20 @@
-# Created by https://www.toptal.com/developers/gitignore/api/python
-# Edit at https://www.toptal.com/developers/gitignore?templates=python
+# Created by https://www.toptal.com/developers/gitignore/api/python,azurite
+# Edit at https://www.toptal.com/developers/gitignore?templates=python,azurite
+
+### Azurite ###
+# Azurite queue
+__queuestorage__
+__azurite_db_queue__.json
+__azurite_db_queue_extent__.json
+
+# Azurite blob
+__blobstorage__
+__azurite_db_blob__.json
+__azurite_db_blob_extent__.json
+
+# Azurite table
+__azurite_db_table__.json
+__azurite_db_table_extent__.json
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
@@ -98,6 +113,13 @@ ipython_config.py
 #   install all needed dependencies.
 #Pipfile.lock
 
+# poetry
+#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
+#   This is especially recommended for binary packages to ensure reproducibility, and is more
+#   commonly ignored for libraries.
+#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
+#poetry.lock
+
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow
 __pypackages__/
 
@@ -141,6 +163,11 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# End of https://www.toptal.com/developers/gitignore/api/python
+# PyCharm
+#  JetBrains specific template is maintainted in a separate JetBrains.gitignore that can
+#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#  and can be added to the global gitignore or merged into this file.  For a more nuclear
+#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
+#.idea/
 
-docs/.asciidoctor
+# End of https://www.toptal.com/developers/gitignore/api/python,azurite

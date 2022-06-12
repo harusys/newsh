@@ -1,17 +1,21 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage": "",
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "COSMOS_ENDPOINT": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/COSMOS-ENDPOINT/)",
+    "COSMOS_PRIMARYKEY": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/COSMOS-PRIMARYKEY/)",
+    "COSMOS_DATABASE": "NEWSH",
+    "COSMOS_CONTAINER_TIMER_MANAGER": "TEST_TIMER_MANAGER",
     "Environment": "local",
     "FUNCTIONS_WORKER_RUNTIME": "python",
-    "ScheduleAppSetting": "0 0 1,12 * * *",
-    "TWITTER_TREND_URL": "http://localhost:7071/trends",
     "TWITTER_TREND_HIGHER_THAN": "20",
     "TWITTER_TREND_KEYWORD": "Twitterトレンドを知りたい",
+    "TWITTER_TREND_URL": "http://localhost:7071/trends",
     "LINE_CHANNEL_ACCESS_TOKEN": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/LINE-CHANNEL-ACCESS-TOKEN/)",
     "LINE_CHANNEL_SECRET": "@Microsoft.KeyVault(SecretUri=https://keyVaultName.vault.azure.net/secrets/LINE-CHANNEL-SECRET/)",
-    "WEATHER_URL":"http://localhost:7071/weather",
-    "WEATHER_TREND_KEYWORD": "天気情報を知りたい"
+    "ScheduleAppSetting": "0 */15 * * * *",
+    "WEATHER_URL":"http://localhost:7072/weather",
+    "WEATHER_KEYWORD": "天気情報を知りたい"
   },
   "Host": {
     "LocalHttpPort": 7070
