@@ -2,8 +2,11 @@
 # https://github.com/Azure/azure-functions-docker/blob/dev/host/3.0/buster/amd64/python/python38/python38-core-tools.Dockerfile
 FROM mcr.microsoft.com/azure-functions/python:3.0-python3.8-core-tools
 
-#RUN pip install fastapi uvicorn[standard]
-RUN pip install azure-functions bonnette fastapi
+# For Fast API
+RUN pip install azure-functions bonnette fastapi tweepy
 
-#RUN pip install other module for Newsh
-RUN pip install tweepy line-bot-sdk azure-identity azure-keyvault-secrets flake8
+# For Linter / Formatter
+RUN pip install flake8 black
+
+# For other module Newsh
+RUN pip install line-bot-sdk azure-identity azure-keyvault-secrets
