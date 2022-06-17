@@ -9,7 +9,7 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from pydantic import BaseModel
 
-from ..timer import get_twitter_trends
+from ..timer import get_twitter_trends, get_weather
 
 app = FastAPI()
 
@@ -63,10 +63,9 @@ def message_text(event):
         trends = get_twitter_trends()
         line.reply_message(event.reply_token, TextSendMessage(text=trends))
 
-    elif event.message.text == WEATHER_KEYWORD:
-        line.reply_message(
-            event.reply_token, TextSendMessage(text="リリースまでお待ち下さい。")
-        )
+    if event.message.text == WEATHER_KEYWORD:
+        weather = get_weather()
+        line.reply_message(event.reply_token, TextSendMessage(text=weather))
 
     else:
         line.reply_message(

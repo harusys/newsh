@@ -16,14 +16,22 @@
 	"extensions": [
 		"ms-azuretools.vscode-azurefunctions",
 		"ms-azuretools.vscode-docker",
-		"ms-python.python"
-	],
+		"ms-python.python",
+		"Azurite.azurite",
+		"usernamehw.errorlens",
+		"dbaeumer.vscode-eslint",
+		"GitHub.copilot",
+		"oderwat.indent-rainbow",
+		"PKief.material-icon-theme",
+		"esbenp.prettier-vscode",
+		"Gruntfuggly.todo-tree"
+	]
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "pip3 install --user -r requirements.txt",
+	"postCreateCommand": "pip install -r gateway/requirements.txt -r twitter/requirements.txt -r weather/requirements.txt"
 
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	// "remoteUser": "vscode"
