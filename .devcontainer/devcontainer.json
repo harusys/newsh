@@ -25,7 +25,7 @@
 		"PKief.material-icon-theme",
 		"esbenp.prettier-vscode",
 		"Gruntfuggly.todo-tree"
-	]
+	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
